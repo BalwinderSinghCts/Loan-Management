@@ -19,11 +19,12 @@ namespace WebApi.Controllers
         private readonly IConfiguration _configuration;
         private readonly AuthService _auth;
         private readonly IUserService _iUserService;
-        public AccountController(IUserService userService, IConfiguration configuration)
+        public AccountController(DatabaseDbContext databaseDbContext ,IUserService userService, IConfiguration configuration)
         {
             _iUserService = userService;
             _configuration = configuration;
             _auth = new AuthService(_configuration);
+            _databaseDbContext = databaseDbContext;
         }
         [HttpPost("v{version:apiVersion}/userregister")]
         public IActionResult Register([FromBody] User user)

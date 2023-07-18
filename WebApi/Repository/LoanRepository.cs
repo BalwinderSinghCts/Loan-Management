@@ -87,6 +87,7 @@ namespace WebApi.Repository
                 customer.PanNo = model.CustomerPanNo;
                 customer.GSTNo = model.CustomerGSTNo;
                 customer.CreatedDate = DateTime.Now.Date;
+                customer.CreatedBy = model.UserId;
                 customer.Active = true;
                 _databaseDbContext.Customer.Add(customer);
                 int result = await _databaseDbContext.SaveChangesAsync();
@@ -103,13 +104,14 @@ namespace WebApi.Repository
                     loan.ProcessingFee = model.Amount * 0.05m;
                     loan.GSTAmount = model.Amount * 0.18m;
                     loan.CreatedDate = DateTime.Now.Date;
+                    loan.CreatedBy = model.UserId;
                     _databaseDbContext.Loan.Add(loan);
                     finalResult = await _databaseDbContext.SaveChangesAsync();
                     if (finalResult > 0)
                     {
                         model.LoanId = loan.Id;
                         model.CustomerId = customer.Id;
-                }
+                    }
                 }
                 return finalResult > 0 ? model : null;
 
@@ -175,7 +177,7 @@ namespace WebApi.Repository
 
             }
             catch (Exception)
-        {
+            {
                 throw;
             }
 

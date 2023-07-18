@@ -26,7 +26,7 @@ namespace WebApi.Controllers
                 response.IsSuccess = true;
                 response.ListData = res;
                 return Ok(response);
-        }
+            }
             catch (Exception)
             {
                 throw;
@@ -53,11 +53,11 @@ namespace WebApi.Controllers
                 throw;
             }
             finally
-        {
+            {
                 _loanService.Dispose();
             }
         }
-        //[Authorize("Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("v{version:apiVersion}/AddLoan")]
         public async Task<IActionResult> AddLoan([FromBody] LoanVM model)
         {
@@ -84,15 +84,15 @@ namespace WebApi.Controllers
                 _loanService.Dispose();
             }
         }
-
+        [Authorize(Roles ="Admin")]
         [HttpPut("v{version:apiVersion}/UpdateLoan")]
         public async Task<IActionResult> UpdateLoan([FromBody] LoanVM model)
         {
             try
             {
-            var data = await _loanService.UpdateLoan(model);
-            return Ok(data);
-        }
+                var data = await _loanService.UpdateLoan(model);
+                return Ok(data);
+            }
             catch (Exception)
             {
                 throw;
