@@ -26,7 +26,7 @@ namespace WebApi.Controllers
                 response.IsSuccess = true;
                 response.ListData = res;
                 return Ok(response);
-            }
+        }
             catch (Exception)
             {
                 throw;
@@ -53,7 +53,7 @@ namespace WebApi.Controllers
                 throw;
             }
             finally
-            {
+        {
                 _loanService.Dispose();
             }
         }
@@ -90,9 +90,9 @@ namespace WebApi.Controllers
         {
             try
             {
-                var data = await _loanService.UpdateLoan(model);
-                return Ok(data);
-            }
+            var data = await _loanService.UpdateLoan(model);
+            return Ok(data);
+        }
             catch (Exception)
             {
                 throw;

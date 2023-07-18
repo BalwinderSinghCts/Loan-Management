@@ -109,7 +109,7 @@ namespace WebApi.Repository
                     {
                         model.LoanId = loan.Id;
                         model.CustomerId = customer.Id;
-                    }
+                }
                 }
                 return finalResult > 0 ? model : null;
 
@@ -175,7 +175,7 @@ namespace WebApi.Repository
 
             }
             catch (Exception)
-            {
+        {
                 throw;
             }
 
