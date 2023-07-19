@@ -21,8 +21,6 @@ namespace WebApi.Repository
         {
             var data = await _databaseDbContext.Loan
                 .Include(i => i.Customer)
-                .Include(i => i.Documents)
-                .Include(i => i.LoanHistory)
                 .Select(s =>
                 new LoanVM()
                 {
@@ -33,10 +31,32 @@ namespace WebApi.Repository
                     FirstName = s.Customer.FirstName,
                     LastName = s.Customer.LastName,
                     CustomerPhone = s.Customer.PhoneNumber,
-                    CustomerAddress = s.Customer.Address,
+                    CustomerAddress = s.Customer.Address
                 })
                 .FirstOrDefaultAsync(x => x.LoanNumber == loanNumber);
+            data.LoanHistory = await LoanHistoryDetails(data.LoanNumber);
+            data.LoanDocuments = await LoanDocumentDetails(Convert.ToInt32(data.LoanNumber));
             return data;
+        }
+        public async Task<List<LoanHistoryVM>> LoanHistoryDetails(string loanNumber)
+        {
+            List<LoanHistoryVM> list = new List<LoanHistoryVM>();
+            var data = await _databaseDbContext.LoanHistory.Where(x => x.LoanNumber == loanNumber).ToListAsync();
+            data.ForEach(x =>
+            {
+                list.Add(new LoanHistoryVM() { Id = x.Id, EMIAmount = x.EMIAmount.ToString(), EMIDueDate = x.EMIDueDate, EMIPaidDate = x.EMIPaidDate, LoanNumber = x.LoanNumber, PaymentStatus = x.PaymentStatus });
+            });
+            return list;
+        }
+        public async Task<List<LoanDocumentVM>> LoanDocumentDetails(Int32 loanNumber)
+        {
+            List<LoanDocumentVM> list = new List<LoanDocumentVM>();
+            var data = await _databaseDbContext.LoanDocument.Where(x => x.LoanNumber == loanNumber).ToListAsync();
+            data.ForEach(x =>
+            {
+                list.Add(new LoanDocumentVM() { Id = x.Id, Name = x.Name, LoanNumber = x.LoanNumber, Type = x.Type });
+            });
+            return list;
         }
 
         public async Task<IEnumerable<LoanVM>> SearchLoan(LoanVMFilters loanVMFilters)

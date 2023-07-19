@@ -40,7 +40,7 @@ namespace WebApi.Controllers
             return StatusCode(StatusCodes.Status201Created, "user created successfully");
         }
         [HttpPost("v{version:apiVersion}/userlogin")]
-        public IActionResult Login([FromBody] UserLoginVM user)
+        public IActionResult Login(UserLoginVM user)
         {
             var userExists = _iUserService.GetUser(user.Email);
             if (userExists is null)

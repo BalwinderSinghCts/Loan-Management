@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
@@ -9,6 +10,8 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ApiVersion("1")]
+    [EnableCors()]
+
     public class LoanController : ControllerBase
     {
         private readonly ILoanService _loanService;
@@ -35,7 +38,6 @@ namespace WebApi.Controllers
             {
                 _loanService.Dispose();
             }
-
         }
         [HttpGet("v{version:apiVersion}/LoanDetail")]
         public async Task<IActionResult> LoanDetail(string loanNumber)
