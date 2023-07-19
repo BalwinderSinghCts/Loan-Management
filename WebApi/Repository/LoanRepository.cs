@@ -44,7 +44,7 @@ namespace WebApi.Repository
             var data = await _databaseDbContext.LoanHistory.Where(x => x.LoanNumber == loanNumber).ToListAsync();
             data.ForEach(x =>
             {
-                list.Add(new LoanHistoryVM() { Id = x.Id, EMIAmount = x.EMIAmount.ToString(), EMIDueDate = x.EMIDueDate, EMIPaidDate = x.EMIPaidDate, LoanNumber = x.LoanNumber, PaymentStatus = x.PaymentStatus });
+                list.Add(new LoanHistoryVM() { TranscationId=x.TranscationId, Id = x.Id, EMIAmount = x.EMIAmount.ToString(), EMIDueDate = x.EMIDueDate, EMIPaidDate = x.EMIPaidDate, LoanNumber = x.LoanNumber, PaymentStatus = x.PaymentStatus });
             });
             return list;
         }
