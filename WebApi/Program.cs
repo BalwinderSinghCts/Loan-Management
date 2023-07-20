@@ -24,6 +24,7 @@ builder.Services.AddMvc().AddXmlSerializerFormatters();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IUserService, UserRepository>();
 builder.Services.AddScoped<ILoanService, LoanRepository>();
+builder.Services.AddScoped<ICustomerService, CustomerRepository>();
 //builder.Services.AddSwaggerGen();
 builder.Services.AddApiVersioning(options =>
 {

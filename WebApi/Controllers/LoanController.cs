@@ -59,7 +59,7 @@ namespace WebApi.Controllers
                 _loanService.Dispose();
             }
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("v{version:apiVersion}/AddLoan")]
         public async Task<IActionResult> AddLoan([FromBody] LoanVM model)
         {
