@@ -2,8 +2,10 @@
 
 namespace WebApi.Repository
 {
-    public interface ICustomerService: IDisposable
+    public interface ICustomerService : IDisposable
     {
         Task<CustomerVM> AddCustomer(CustomerVM model);
+        Task<IEnumerable<CustomerVM>> CustomerList();
+        Task<CustomerVM> GetCustomerDetail(int id);
     }
 }

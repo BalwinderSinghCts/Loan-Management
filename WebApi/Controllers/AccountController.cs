@@ -68,7 +68,8 @@ namespace WebApi.Controllers
                 creation_Time = token.ValidFrom,
                 expiration_Time = token.ValidTo,
                 userid = userExists.Id,
-                name = userExists.Name
+                name = userExists.Name,
+                role = userExists.Role
             });
 
             return StatusCode(StatusCodes.Status200OK, tokenamin);

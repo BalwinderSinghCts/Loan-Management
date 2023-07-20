@@ -86,14 +86,26 @@ namespace WebApi.Controllers
                 _loanService.Dispose();
             }
         }
-        [Authorize(Roles ="Admin")]
-        [HttpPut("v{version:apiVersion}/UpdateLoan")]
+        //[Authorize(Roles ="Admin")]
+        [HttpPost("v{version:apiVersion}/UpdateLoan")]
         public async Task<IActionResult> UpdateLoan([FromBody] LoanVM model)
         {
+            ResponseMessage<LoanVM> response = new ResponseMessage<LoanVM>();
+
             try
             {
                 var data = await _loanService.UpdateLoan(model);
-                return Ok(data);
+                if (data is not null && data.LoanId > 0)
+                {
+                    response.IsSuccess = true;
+                    response.Data = data;
+                    response.Message = "Data updated successfully";
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest(response);
+                }
             }
             catch (Exception)
             {

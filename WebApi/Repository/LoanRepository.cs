@@ -24,6 +24,8 @@ namespace WebApi.Repository
                 .Select(s =>
                 new LoanVM()
                 {
+                    Amount = s.Amount,
+                    RateOfinterst = s.RateOfinterst,
                     LoanNumber = s.LoanNumber,
                     LoanStatus = s.Status,
                     LoanType = s.LoanType,
@@ -141,31 +143,12 @@ namespace WebApi.Repository
             int finalResult = 0;
             try
             {
-                var customerExisits = await _databaseDbContext.Customer.FirstOrDefaultAsync(x => x.Id == model.CustomerId);
-                if (customerExisits is not null)
-                {
-                    customerExisits.FirstName = model.FirstName;
-                    customerExisits.LastName = model.LastName;
-                    customerExisits.PhoneNumber = model.CustomerPhone;
-                    customerExisits.Address = model.CustomerAddress;
-                    customerExisits.PanNo = model.CustomerPanNo;
-                    customerExisits.GSTNo = model.CustomerGSTNo;
-                    customerExisits.UpdtateBy = model.UserId;
-                    customerExisits.UpdtateDate = DateTime.Now.Date;
-                }
 
-                _databaseDbContext.Entry(customerExisits).State = EntityState.Modified;
-                int result = await _databaseDbContext.SaveChangesAsync();
-                if (result > 0)
-                {
-
-                    var loanExisits = _databaseDbContext.Loan.FirstOrDefault(x => x.Id == model.LoanId);
+                    var loanExisits = _databaseDbContext.Loan.FirstOrDefault(x => x.LoanNumber == model.LoanNumber);
                     if (loanExisits is not null)
                     {
                         loanExisits.Amount = model.Amount;
-                        loanExisits.Status = model.LoanStatus;
                         loanExisits.LoanTerm = model.LoanTerm;
-                        loanExisits.RateOfinterst = model.RateOfinterst;
                         loanExisits.ProcessingFee = model.Amount * 0.05m;
                         loanExisits.GSTAmount = model.Amount * 0.18m;
                         loanExisits.UpdatedDate = DateTime.Now.Date;
@@ -178,9 +161,9 @@ namespace WebApi.Repository
                     if (finalResult > 0)
                     {
                         model.LoanId = loanExisits.Id;
-                        model.CustomerId = customerExisits.Id;
+                        model.CustomerId = loanExisits.CustomerId;
                     }
-                }
+                
                 return finalResult > 0 ? model : null;
 
             }
