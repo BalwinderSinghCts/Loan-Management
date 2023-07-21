@@ -91,7 +91,6 @@ namespace WebApi.Controllers
         public async Task<IActionResult> UpdateLoan([FromBody] LoanVM model)
         {
             ResponseMessage<LoanVM> response = new ResponseMessage<LoanVM>();
-
             try
             {
                 var data = await _loanService.UpdateLoan(model);

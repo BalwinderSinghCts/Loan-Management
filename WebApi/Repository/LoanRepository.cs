@@ -38,6 +38,7 @@ namespace WebApi.Repository
                 .FirstOrDefaultAsync(x => x.LoanNumber == loanNumber);
             data.LoanHistory = await LoanHistoryDetails(data.LoanNumber);
             data.LoanDocuments = await LoanDocumentDetails(Convert.ToInt32(data.LoanNumber));
+            data.LoanTypeName = data.LoanType >0? LoantypeVM.GetLoanTypes().FirstOrDefault(l => l.Id == data.LoanType).Name:"";
             return data;
         }
         public async Task<List<LoanHistoryVM>> LoanHistoryDetails(string loanNumber)
@@ -73,13 +74,17 @@ namespace WebApi.Repository
                     LoanNumber = s.LoanNumber,
                     LoanStatus = s.Status,
                     LoanType = s.LoanType,
-                    LoanTerm = s.LoanTerm,
                     FirstName = s.Customer.FirstName,
                     LastName = s.Customer.LastName,
                     CustomerPhone = s.Customer.PhoneNumber,
                     CustomerAddress = s.Customer.Address,
                 }).ToListAsync();
 
+            data.ForEach(x =>
+            {
+
+                x.LoanTypeName = x.LoanType>0? LoantypeVM.GetLoanTypes().FirstOrDefault(l =>  l.Id == x.LoanType).Name:"";
+            });
             if (string.IsNullOrEmpty(loanVMFilters.FirstName) && string.IsNullOrEmpty(loanVMFilters.LastName) && string.IsNullOrEmpty(loanVMFilters.LoanNumber))
             {
                 return data?.Skip((loanVMFilters.PageNo - 1) * loanVMFilters.PageSize)
@@ -110,6 +115,7 @@ namespace WebApi.Repository
                 loan.Status = "Pending";
                 loan.LoanTerm = model.LoanTerm;
                 loan.LoanType = model.LoanType;
+                loan.LoanTypeName = LoantypeVM.GetLoanTypes().FirstOrDefault(l => l.Id == model.LoanType).Name;
                 loan.RateOfinterst = model.RateOfinterst;
                 loan.ProcessingFee = model.Amount * 0.05m;
                 loan.GSTAmount = model.Amount * 0.18m;
@@ -144,26 +150,27 @@ namespace WebApi.Repository
             try
             {
 
-                    var loanExisits = _databaseDbContext.Loan.FirstOrDefault(x => x.LoanNumber == model.LoanNumber);
-                    if (loanExisits is not null)
-                    {
-                        loanExisits.Amount = model.Amount;
-                        loanExisits.LoanTerm = model.LoanTerm;
-                        loanExisits.ProcessingFee = model.Amount * 0.05m;
-                        loanExisits.GSTAmount = model.Amount * 0.18m;
-                        loanExisits.UpdatedDate = DateTime.Now.Date;
-                        loanExisits.UpdatedBy = model.UserId;
-                        _databaseDbContext.Entry(loanExisits).State = EntityState.Modified;
-                        finalResult = await _databaseDbContext.SaveChangesAsync();
+                var loanExisits = _databaseDbContext.Loan.FirstOrDefault(x => x.LoanNumber == model.LoanNumber);
+                if (loanExisits is not null)
+                {
+                    loanExisits.Amount = model.Amount;
+                    loanExisits.LoanType = model.LoanType;
+                    loanExisits.LoanTerm = model.LoanTerm;
+                    loanExisits.ProcessingFee = model.Amount * 0.05m;
+                    loanExisits.GSTAmount = model.Amount * 0.18m;
+                    loanExisits.UpdatedDate = DateTime.Now.Date;
+                    loanExisits.UpdatedBy = model.UserId;
+                    _databaseDbContext.Entry(loanExisits).State = EntityState.Modified;
+                    finalResult = await _databaseDbContext.SaveChangesAsync();
 
-                    }
+                }
 
-                    if (finalResult > 0)
-                    {
-                        model.LoanId = loanExisits.Id;
-                        model.CustomerId = loanExisits.CustomerId;
-                    }
-                
+                if (finalResult > 0)
+                {
+                    model.LoanId = loanExisits.Id;
+                    model.CustomerId = loanExisits.CustomerId;
+                }
+
                 return finalResult > 0 ? model : null;
 
             }

@@ -20,6 +20,7 @@ namespace WebApi.Models
         public string LoanNumber { get; set; }
         public string LoanStatus { get; set; }
         public int LoanType { get; set; }
+        public string LoanTypeName { get; set; }
         public int LoanTerm { get; set; }
         public decimal Amount { get; set; }
         public decimal RateOfinterst { get; set; }
