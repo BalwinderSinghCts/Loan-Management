@@ -115,7 +115,7 @@ namespace WebApi.Repository
                 loan.Status = "Pending";
                 loan.LoanTerm = model.LoanTerm;
                 loan.LoanType = model.LoanType;
-                loan.LoanTypeName = LoantypeVM.GetLoanTypes().FirstOrDefault(l => l.Id == model.LoanType).Name;
+                //loan.LoanTypeName = LoantypeVM.GetLoanTypes().FirstOrDefault(l => l.Id == model.LoanType).Name;
                 loan.RateOfinterst = model.RateOfinterst;
                 loan.ProcessingFee = model.Amount * 0.05m;
                 loan.GSTAmount = model.Amount * 0.18m;

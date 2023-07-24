@@ -13,7 +13,6 @@ namespace WebApi.Entities
         public int LoanTerm { get; set; }
         public string Status { get; set; } = "Pending";
         public int LoanType { get; set; }
-        public string LoanTypeName { get; set; }
         public DateTime OriginationDate { get; set; }
         public string OriginationAccount { get; set; }
         [Column(TypeName = "decimal(18,2)")]
