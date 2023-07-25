@@ -38,7 +38,7 @@ namespace WebApi.Repository
                 .FirstOrDefaultAsync(x => x.LoanNumber == loanNumber);
             data.LoanHistory = await LoanHistoryDetails(data.LoanNumber);
             data.LoanDocuments = await LoanDocumentDetails(Convert.ToInt32(data.LoanNumber));
-            data.LoanTypeName = data.LoanType >0? LoantypeVM.GetLoanTypes().FirstOrDefault(l => l.Id == data.LoanType).Name:"";
+            data.LoanTypeName = data.LoanType > 0 ? LoantypeVM.GetLoanTypes().FirstOrDefault(l => l.Id == data.LoanType).Name : "";
             return data;
         }
         public async Task<List<LoanHistoryVM>> LoanHistoryDetails(string loanNumber)
@@ -83,7 +83,7 @@ namespace WebApi.Repository
             data.ForEach(x =>
             {
 
-                x.LoanTypeName = x.LoanType>0? LoantypeVM.GetLoanTypes().FirstOrDefault(l =>  l.Id == x.LoanType).Name:"";
+                x.LoanTypeName = x.LoanType > 0 ? LoantypeVM.GetLoanTypes().FirstOrDefault(l => l.Id == x.LoanType).Name : "";
             });
             if (string.IsNullOrEmpty(loanVMFilters.FirstName) && string.IsNullOrEmpty(loanVMFilters.LastName) && string.IsNullOrEmpty(loanVMFilters.LoanNumber))
             {
@@ -126,6 +126,7 @@ namespace WebApi.Repository
                 if (finalResult > 0)
                 {
                     model.LoanId = loan.Id;
+                    model.LoanNumber = loan.LoanNumber;
                 }
 
                 return finalResult > 0 ? model : null;
