@@ -23,6 +23,7 @@ namespace WebApi.Repository
                 customer.PhoneNumber = model.PhoneNumber;
                 customer.Address = model.Address;
                 customer.PanNo = model.PanNo;
+                customer.Email = model.Email;
                 customer.GSTNo = model.GSTNo;
                 customer.CreatedDate = DateTime.Now.Date;
                 customer.CreatedBy = Convert.ToInt32(model.UserId);

@@ -32,6 +32,7 @@ namespace WebApi.Repository
                     LoanTerm = s.LoanTerm,
                     FirstName = s.Customer.FirstName,
                     LastName = s.Customer.LastName,
+                    Email = s.Customer.Email,
                     CustomerPhone = s.Customer.PhoneNumber,
                     CustomerAddress = s.Customer.Address
                 })
