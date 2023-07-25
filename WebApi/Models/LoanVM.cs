@@ -10,7 +10,7 @@ namespace WebApi.Models
         }
         public int LoanId { get; set; }
         public int CustomerId { get; set; }
-        public int CustomerEmail { get; set; }
+        public string CustomerEmail { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string CustomerPhone { get; set; }
